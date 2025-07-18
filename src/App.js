@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import SpoilerWheelMain from './wheel/spoilerWheelMain';
+import { parseSpoilerLog } from './utils/spoilerParser';
 
-function App() {
+export default function SpoilerWheelApp() {
+  const [keyItems, setKeyItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    fetch('/spoiler-log.txt')
+      .then((res) => res.text())
+      .then((text) => {
+        const parsedItems = parseSpoilerLog(text);
+        const unrevealed = parsedItems.filter(item => !item.revealed);
+        setKeyItems(unrevealed);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='main'>
+      <SpoilerWheelMain keyItems={keyItems} setKeyItems={setKeyItems} selectedItem={selectedItem} setSelectedItem={setSelectedItem}></SpoilerWheelMain>
     </div>
-  );
+  )
 }
-
-export default App;
