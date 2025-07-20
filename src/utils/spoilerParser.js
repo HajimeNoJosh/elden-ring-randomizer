@@ -38,7 +38,7 @@ function parseTxtSpoilerLog(text) {
                 option: item?.trim() || 'Unknown item',
                 location: location?.trim() || 'Unknown location',
                 revealed: false,
-                id: index // use i here if you want renumbering
+                id: index
             };
         });
 }
